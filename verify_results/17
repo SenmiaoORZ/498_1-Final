@@ -1,0 +1,77 @@
+> Task :common:compileJava UP-TO-DATE
+> Task :common:processResources NO-SOURCE
+> Task :common:classes UP-TO-DATE
+> Task :common:jar UP-TO-DATE
+> Task :spes:compileJava UP-TO-DATE
+> Task :spes:processResources NO-SOURCE
+> Task :spes:classes UP-TO-DATE
+> Task :spes:jar UP-TO-DATE
+> Task :sql:antlrMysql
+> Task :sql:copyMysql NO-SOURCE
+> Task :sql:antlrPg
+> Task :sql:copyPg NO-SOURCE
+> Task :sql:compileJava UP-TO-DATE
+> Task :sql:processResources UP-TO-DATE
+> Task :sql:classes UP-TO-DATE
+> Task :sql:jar UP-TO-DATE
+> Task :stmt:compileJava UP-TO-DATE
+> Task :stmt:processResources UP-TO-DATE
+> Task :stmt:classes UP-TO-DATE
+> Task :stmt:jar UP-TO-DATE
+> Task :superopt:compileJava UP-TO-DATE
+> Task :superopt:processResources UP-TO-DATE
+> Task :superopt:classes UP-TO-DATE
+
+> Task :superopt:run
+1. Rule String
+  Proj<a0 s0>(InnerJoin<k0 k1>(Input<t0>,Input<t1>))|Proj<a1 s1>(InnerJoin<k2 k3>(Input<t2>,Input<t3>))|AttrsEq(a0,k1);AttrsSub(a0,t1);AttrsSub(k0,t0);AttrsSub(k1,t1);TableEq(t2,t0);TableEq(t3,t1);AttrsEq(k2,k0);AttrsEq(k3,k1);AttrsEq(a1,k0);SchemaEq(s1,s0)
+
+2. Example Query
+  SELECT `t1`.`c1` AS `c1` FROM `r0` AS `t0` INNER JOIN `r1` AS `t1` ON `t0`.`c0` = `t1`.`c1`
+  SELECT `t0`.`c0` AS `c0` FROM `r0` AS `t0` INNER JOIN `r1` AS `t1` ON `t0`.`c0` = `t1`.`c1`
+
+3. U-Expression
+  [[q0]](x2) := ∑{x0,x1}([x2 = k1(x1)] * t0(x0) * [k0(x0) = k1(x1)] * not([IsNull(k1(x1))]) * t1(x1))
+  [[q1]](x2) := ∑{x0,x1}([x2 = k0(x0)] * t0(x0) * [k0(x0) = k1(x1)] * not([IsNull(k1(x1))]) * t1(x1))
+
+4. First-Order Formulas (Z3 Script)
+==== Begin of Snippet-1 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun k0 (Int Tuple) Tuple)
+(declare-fun k1 (Int Tuple) Tuple)
+(declare-fun x2 () Tuple)
+(declare-fun x1 () Tuple)
+(declare-fun x0 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k1 s x) Null))))
+(assert (= x2 x2))
+(assert (not (= (ite (and (= x2 (k1 2 x1))
+                  (= (k0 1 x0) (k1 2 x1))
+                  (not (= (k1 2 x1) Null)))
+             (* (t0 x0) (t1 x1))
+             0)
+        (ite (and (= x2 (k0 1 x0))
+                  (= (k0 1 x0) (k1 2 x1))
+                  (not (= (k1 2 x1) Null)))
+             (* (t0 x0) (t1 x1))
+             0))))
+
+(check-sat)
+==== End of Snippet-1 ====
+==> Result: UNSATISFIABLE
+
+Rule-17: EQ
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+See https://docs.gradle.org/7.3.3/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 4s
+15 actionable tasks: 3 executed, 12 up-to-date

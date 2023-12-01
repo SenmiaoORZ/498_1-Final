@@ -1,0 +1,43 @@
+> Task :common:compileJava UP-TO-DATE
+> Task :common:processResources NO-SOURCE
+> Task :common:classes UP-TO-DATE
+> Task :common:jar UP-TO-DATE
+> Task :spes:compileJava UP-TO-DATE
+> Task :spes:processResources NO-SOURCE
+> Task :spes:classes UP-TO-DATE
+> Task :spes:jar UP-TO-DATE
+> Task :sql:antlrMysql
+> Task :sql:copyMysql NO-SOURCE
+> Task :sql:antlrPg
+> Task :sql:copyPg NO-SOURCE
+> Task :sql:compileJava UP-TO-DATE
+> Task :sql:processResources UP-TO-DATE
+> Task :sql:classes UP-TO-DATE
+> Task :sql:jar UP-TO-DATE
+> Task :stmt:compileJava UP-TO-DATE
+> Task :stmt:processResources UP-TO-DATE
+> Task :stmt:classes UP-TO-DATE
+> Task :stmt:jar UP-TO-DATE
+> Task :superopt:compileJava UP-TO-DATE
+> Task :superopt:processResources UP-TO-DATE
+> Task :superopt:classes UP-TO-DATE
+
+> Task :superopt:run
+1. Rule String
+  Agg<a2 a3 f0 s1 p1>(Filter<p0 a1>(Proj<a0 s0>(Input<t0>)))|Agg<a5 a6 f1 s2 p3>(Filter<p2 a4>(Input<t1>))|AttrsSub(a0,t0);AttrsSub(a1,s0);AttrsSub(a2,s0);AttrsSub(a3,s0);TableEq(t1,t0);AttrsEq(a4,a1);AttrsEq(a5,a2);AttrsEq(a6,a3);PredicateEq(p2,p0);PredicateEq(p3,p1);SchemaEq(s2,s1);FuncEq(f1,f0)
+
+2. Example Query
+  SELECT `q0`.`c2` AS `c2`, COUNT(`q0`.`c3`) FROM (SELECT `t0`.`c0` AS `c0`, `t0`.`c1` AS `c1`, `t0`.`c2` AS `c2`, `t0`.`c3` AS `c3` FROM `r0` AS `t0`) AS `q0` WHERE P0(`q0`.`c1`) GROUP BY `q0`.`c2` HAVING P1(COUNT(`q0`.`c3`))
+  SELECT `t0`.`c2` AS `c2`, COUNT(`t0`.`c3`) FROM `r0` AS `t0` WHERE P0(`t0`.`c1`) GROUP BY `t0`.`c2` HAVING P1(COUNT(`t0`.`c3`))
+
+
+Rule-33: EQ
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+See https://docs.gradle.org/7.3.3/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 4s
+15 actionable tasks: 3 executed, 12 up-to-date

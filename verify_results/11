@@ -1,0 +1,285 @@
+> Task :common:compileJava UP-TO-DATE
+> Task :common:processResources NO-SOURCE
+> Task :common:classes UP-TO-DATE
+> Task :common:jar UP-TO-DATE
+> Task :spes:compileJava UP-TO-DATE
+> Task :spes:processResources NO-SOURCE
+> Task :spes:classes UP-TO-DATE
+> Task :spes:jar UP-TO-DATE
+> Task :sql:antlrMysql
+> Task :sql:copyMysql NO-SOURCE
+> Task :sql:antlrPg
+> Task :sql:copyPg NO-SOURCE
+> Task :sql:compileJava UP-TO-DATE
+> Task :sql:processResources UP-TO-DATE
+> Task :sql:classes UP-TO-DATE
+> Task :sql:jar UP-TO-DATE
+> Task :stmt:compileJava UP-TO-DATE
+> Task :stmt:processResources UP-TO-DATE
+> Task :stmt:classes UP-TO-DATE
+> Task :stmt:jar UP-TO-DATE
+> Task :superopt:compileJava UP-TO-DATE
+> Task :superopt:processResources UP-TO-DATE
+> Task :superopt:classes UP-TO-DATE
+
+> Task :superopt:run
+1. Rule String
+  Proj<a2 s0>(LeftJoin<a0 a1>(Input<t0>,Input<t1>))|Proj<a3 s1>(Input<t2>)|AttrsSub(a0,t0);AttrsSub(a1,t1);AttrsSub(a2,t0);Unique(t1,a1);TableEq(t2,t0);AttrsEq(a3,a2);SchemaEq(s1,s0)
+
+2. Example Query
+  SELECT `t0`.`c2` AS `c2` FROM `r0` AS `t0` LEFT JOIN `r1` AS `t1` ON `t0`.`c0` = `t1`.`c1`
+  SELECT `t0`.`c2` AS `c2` FROM `r0` AS `t0`
+
+3. U-Expression
+  [[q0]](x3) := ∑{x0,x1}([x3 = a2(x0)] * t0(x0) * (t1(x1) * [a0(x0) = a1(x1)] * not([IsNull(a1(x1))]) + [IsNull(x1)] * not(∑{x2}(t1(x2) * [a0(x0) = a1(x2)] * not([IsNull(a1(x2))])))))
+  [[q1]](x3) := ∑{x0}([x3 = a2(x0)] * t0(x0))
+
+4. First-Order Formulas (Z3 Script)
+==== Begin of Snippet-1 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun a0 (Int Tuple) Tuple)
+(declare-fun a1 (Int Tuple) Tuple)
+(declare-fun a2 (Int Tuple) Tuple)
+(declare-fun x3 () Tuple)
+(declare-fun x0 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a1 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a2 s x) Null))))
+(assert (forall ((x Tuple)) (<= (t1 x) 1)))
+(assert (forall ((x Tuple) (y Tuple))
+  (=> (and (> (t1 x) 0) (> (t1 y) 0) (= (a1 2 x) (a1 2 y))) (= x y))))
+(assert (= x3 x3))
+(assert (not (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+
+(check-sat)
+==== End of Snippet-1 ====
+==> Result: UNSATISFIABLE
+==== Begin of Snippet-2 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun a0 (Int Tuple) Tuple)
+(declare-fun a1 (Int Tuple) Tuple)
+(declare-fun a2 (Int Tuple) Tuple)
+(declare-fun x3 () Tuple)
+(declare-fun x0 () Tuple)
+(declare-fun x1 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a1 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a2 s x) Null))))
+(assert (forall ((x Tuple)) (<= (t1 x) 1)))
+(assert (forall ((x Tuple) (y Tuple))
+  (=> (and (> (t1 x) 0) (> (t1 y) 0) (= (a1 2 x) (a1 2 y))) (= x y))))
+(assert (= x3 x3))
+(assert (not (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (not (and (= x3 (a2 1 x0)) (> (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (or (and (> (t1 x1) 0) (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null)))
+    (and (= x1 Null)
+         (not (exists ((x2 Tuple))
+                (and (> (t1 x2) 0)
+                     (= (a0 1 x0) (a1 2 x2))
+                     (not (= (a1 2 x2) Null))))))))
+
+(check-sat)
+==== End of Snippet-2 ====
+==> Result: UNSATISFIABLE
+==== Begin of Snippet-3 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun a0 (Int Tuple) Tuple)
+(declare-fun a1 (Int Tuple) Tuple)
+(declare-fun a2 (Int Tuple) Tuple)
+(declare-fun x3 () Tuple)
+(declare-fun x0 () Tuple)
+(declare-fun x1 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a1 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a2 s x) Null))))
+(assert (forall ((x Tuple)) (<= (t1 x) 1)))
+(assert (forall ((x Tuple) (y Tuple))
+  (=> (and (> (t1 x) 0) (> (t1 y) 0) (= (a1 2 x) (a1 2 y))) (= x y))))
+(assert (= x3 x3))
+(assert (not (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (not (and (= x3 (a2 1 x0)) (> (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (or (and (> (t1 x1) 0) (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null)))
+    (and (= x1 Null)
+         (not (exists ((x2 Tuple))
+                (and (> (t1 x2) 0)
+                     (= (a0 1 x0) (a1 2 x2))
+                     (not (= (a1 2 x2) Null))))))))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (forall ((x1 Tuple))
+  (let ((a!1 (and (> (t1 x1) 0)
+                  (= (a0 1 x0) (a1 2 x1))
+                  (not (= (a1 2 x1) Null)))))
+    (not (or a!1
+             (and (= x1 Null)
+                  (not (exists ((x2 Tuple))
+                         (and (> (t1 x2) 0)
+                              (= (a0 1 x0) (a1 2 x2))
+                              (not (= (a1 2 x2) Null)))))))))))
+
+(check-sat)
+==== End of Snippet-3 ====
+==> Result: UNSATISFIABLE
+==== Begin of Snippet-4 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun a0 (Int Tuple) Tuple)
+(declare-fun a1 (Int Tuple) Tuple)
+(declare-fun a2 (Int Tuple) Tuple)
+(declare-fun x3 () Tuple)
+(declare-fun x0 () Tuple)
+(declare-fun x1 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a1 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a2 s x) Null))))
+(assert (forall ((x Tuple)) (<= (t1 x) 1)))
+(assert (forall ((x Tuple) (y Tuple))
+  (=> (and (> (t1 x) 0) (> (t1 y) 0) (= (a1 2 x) (a1 2 y))) (= x y))))
+(assert (= x3 x3))
+(assert (not (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (not (and (= x3 (a2 1 x0)) (> (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (or (and (> (t1 x1) 0) (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null)))
+    (and (= x1 Null)
+         (not (exists ((x2 Tuple))
+                (and (> (t1 x2) 0)
+                     (= (a0 1 x0) (a1 2 x2))
+                     (not (= (a1 2 x2) Null))))))))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (forall ((x1 Tuple))
+  (let ((a!1 (and (> (t1 x1) 0)
+                  (= (a0 1 x0) (a1 2 x1))
+                  (not (= (a1 2 x1) Null)))))
+    (not (or a!1
+             (and (= x1 Null)
+                  (not (exists ((x2 Tuple))
+                         (and (> (t1 x2) 0)
+                              (= (a0 1 x0) (a1 2 x2))
+                              (not (= (a1 2 x2) Null)))))))))))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (> (+ (ite (and (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null))) (t1 x1) 0)
+      (ite (and (= x1 Null)
+                (not (exists ((x2 Tuple))
+                       (and (> (t1 x2) 0)
+                            (= (a0 1 x0) (a1 2 x2))
+                            (not (= (a1 2 x2) Null))))))
+           1
+           0))
+   1))
+
+(check-sat)
+==== End of Snippet-4 ====
+==> Result: UNSATISFIABLE
+==== Begin of Snippet-5 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun a0 (Int Tuple) Tuple)
+(declare-fun a1 (Int Tuple) Tuple)
+(declare-fun a2 (Int Tuple) Tuple)
+(declare-fun x3 () Tuple)
+(declare-fun x0 () Tuple)
+(declare-fun x1 () Tuple)
+(declare-fun Z (Tuple) Bool)
+(declare-fun x1_ () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a1 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (a2 s x) Null))))
+(assert (forall ((x Tuple)) (<= (t1 x) 1)))
+(assert (forall ((x Tuple) (y Tuple))
+  (=> (and (> (t1 x) 0) (> (t1 y) 0) (= (a1 2 x) (a1 2 y))) (= x y))))
+(assert (= x3 x3))
+(assert (not (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (not (and (= x3 (a2 1 x0)) (> (t0 x0) 0))))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (or (and (> (t1 x1) 0) (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null)))
+    (and (= x1 Null)
+         (not (exists ((x2 Tuple))
+                (and (> (t1 x2) 0)
+                     (= (a0 1 x0) (a1 2 x2))
+                     (not (= (a1 2 x2) Null))))))))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (forall ((x1 Tuple))
+  (let ((a!1 (and (> (t1 x1) 0)
+                  (= (a0 1 x0) (a1 2 x1))
+                  (not (= (a1 2 x1) Null)))))
+    (not (or a!1
+             (and (= x1 Null)
+                  (not (exists ((x2 Tuple))
+                         (and (> (t1 x2) 0)
+                              (= (a0 1 x0) (a1 2 x2))
+                              (not (= (a1 2 x2) Null)))))))))))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (> (+ (ite (and (= (a0 1 x0) (a1 2 x1)) (not (= (a1 2 x1) Null))) (t1 x1) 0)
+      (ite (and (= x1 Null)
+                (not (exists ((x2 Tuple))
+                       (and (> (t1 x2) 0)
+                            (= (a0 1 x0) (a1 2 x2))
+                            (not (= (a1 2 x2) Null))))))
+           1
+           0))
+   1))
+(assert (forall ((x1 Tuple))
+  (let ((a!1 (and (> (t1 x1) 0)
+                  (= (a0 1 x0) (a1 2 x1))
+                  (not (= (a1 2 x1) Null)))))
+    (= (Z x1)
+       (or a!1
+           (and (= x1 Null)
+                (not (exists ((x2 Tuple))
+                       (and (> (t1 x2) 0)
+                            (= (a0 1 x0) (a1 2 x2))
+                            (not (= (a1 2 x2) Null)))))))))))
+(assert (not (= x1 x1_)))
+(assert (= (ite (= x3 (a2 1 x0)) (t0 x0) 0) (ite (= x3 (a2 1 x0)) (t0 x0) 0)))
+(assert (and (= x3 (a2 1 x0)) (> (t0 x0) 0)))
+(assert (Z x1))
+(assert (Z x1_))
+
+(check-sat)
+==== End of Snippet-5 ====
+==> Result: UNSATISFIABLE
+
+Rule-11: EQ
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+See https://docs.gradle.org/7.3.3/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 3s
+15 actionable tasks: 3 executed, 12 up-to-date

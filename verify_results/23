@@ -1,0 +1,82 @@
+> Task :common:compileJava UP-TO-DATE
+> Task :common:processResources NO-SOURCE
+> Task :common:classes UP-TO-DATE
+> Task :common:jar UP-TO-DATE
+> Task :spes:compileJava UP-TO-DATE
+> Task :spes:processResources NO-SOURCE
+> Task :spes:classes UP-TO-DATE
+> Task :spes:jar UP-TO-DATE
+> Task :sql:antlrMysql
+> Task :sql:copyMysql NO-SOURCE
+> Task :sql:antlrPg
+> Task :sql:copyPg NO-SOURCE
+> Task :sql:compileJava UP-TO-DATE
+> Task :sql:processResources UP-TO-DATE
+> Task :sql:classes UP-TO-DATE
+> Task :sql:jar UP-TO-DATE
+> Task :stmt:compileJava UP-TO-DATE
+> Task :stmt:processResources UP-TO-DATE
+> Task :stmt:classes UP-TO-DATE
+> Task :stmt:jar UP-TO-DATE
+> Task :superopt:compileJava UP-TO-DATE
+> Task :superopt:processResources UP-TO-DATE
+> Task :superopt:classes UP-TO-DATE
+
+> Task :superopt:run
+1. Rule String
+  InnerJoin<k0 k1>(Input<t0>,InnerJoin<k2 k3>(Input<t1>,Input<t2>))|InnerJoin<k4 k5>(InnerJoin<k6 k7>(Input<t3>,Input<t4>),Input<t5>)|AttrsSub(k0,t0);AttrsSub(k1,t1);AttrsSub(k2,t1);AttrsSub(k3,t2);TableEq(t3,t0);TableEq(t4,t1);TableEq(t5,t2);AttrsEq(k6,k0);AttrsEq(k7,k1);AttrsEq(k4,k2);AttrsEq(k5,k3)
+
+2. Example Query
+  SELECT * FROM `r0` AS `t0` INNER JOIN (`r1` AS `t1` INNER JOIN `r2` AS `t2` ON `t1`.`c0` = `t2`.`c1`) ON `t0`.`c2` = `t1`.`c3`
+  SELECT * FROM `r0` AS `t0` INNER JOIN `r1` AS `t1` ON `t0`.`c2` = `t1`.`c3` INNER JOIN `r2` AS `t2` ON `t1`.`c0` = `t2`.`c1`
+
+3. U-Expression
+  [[q0]](concat(x0,x1,x2)) := t0(x0) * [k0(x0) = k1(x1)] * not([IsNull(k1(x1))]) * t1(x1) * [k2(x1) = k3(x2)] * not([IsNull(k3(x2))]) * t2(x2)
+  [[q1]](concat(x0,x1,x2)) := t0(x0) * [k0(x0) = k1(x1)] * not([IsNull(k1(x1))]) * t1(x1) * [k2(x1) = k3(x2)] * not([IsNull(k3(x2))]) * t2(x2)
+
+4. First-Order Formulas (Z3 Script)
+==== Begin of Snippet-1 ====
+(declare-sort Tuple 0)
+(declare-fun t0 (Tuple) Int)
+(declare-fun t1 (Tuple) Int)
+(declare-fun t2 (Tuple) Int)
+(declare-fun Null () Tuple)
+(declare-fun k2 (Int Tuple) Tuple)
+(declare-fun k3 (Int Tuple) Tuple)
+(declare-fun k0 (Int Tuple) Tuple)
+(declare-fun k1 (Int Tuple) Tuple)
+(declare-fun x0 () Tuple)
+(declare-fun x1 () Tuple)
+(declare-fun x2 () Tuple)
+(assert (forall ((x Tuple)) (>= (t0 x) 0)))
+(assert (forall ((x Tuple)) (>= (t1 x) 0)))
+(assert (forall ((x Tuple)) (>= (t2 x) 0)))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k2 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k3 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k0 s x) Null))))
+(assert (forall ((x Tuple) (s Int)) (=> (= x Null) (= (k1 s x) Null))))
+(assert (= x0 x0))
+(assert (= x1 x1))
+(assert (= x2 x2))
+(assert (let ((a!1 (ite (and (= (k0 1 x0) (k1 2 x1))
+                     (not (= (k1 2 x1) Null))
+                     (= (k2 2 x1) (k3 3 x2))
+                     (not (= (k3 3 x2) Null)))
+                (* (t0 x0) (t1 x1) (t2 x2))
+                0)))
+  (not (= a!1 a!1))))
+
+(check-sat)
+==== End of Snippet-1 ====
+==> Result: UNSATISFIABLE
+
+Rule-23: EQ
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+See https://docs.gradle.org/7.3.3/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 4s
+15 actionable tasks: 3 executed, 12 up-to-date
